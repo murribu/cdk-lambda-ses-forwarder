@@ -4,4 +4,4 @@ import * as cdk from '@aws-cdk/core';
 import { SesStack } from '../lib/ses-stack';
 
 const app = new cdk.App();
-new SesStack(app, 'SesStack');
+new SesStack(app, 'StubMinerSesStack');

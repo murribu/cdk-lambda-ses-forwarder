@@ -1,14 +1,13 @@
-# Welcome to your CDK TypeScript project!
+This is a CDK-ification of [this project](https://github.com/arithmetric/aws-lambda-ses-forwarder)
 
-This is a blank project for TypeScript development with CDK.
+# Steps
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
-
-## Useful commands
-
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run test`    perform the jest unit tests
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk synth`       emits the synthesized CloudFormation template
+1. [Buy a domain](https://console.aws.amazon.com/route53/home#DomainRegistration:)
+1. [Verify your domain in SES](https://console.aws.amazon.com/ses/home?region=us-east-1#verified-senders-domain:)
+1. clone the repo
+1. `cp ./lambda/config.example.js ./lambda/config.js`
+1. Fill in your info in the config file
+1. `yarn`
+1. `npx cdk synth`
+1. `npx cdk deploy --require-approval never`
+1. Go into [your SES Console](https://console.aws.amazon.com/ses/home?region=us-east-1#receipt-rules:) and set your new RuleSet as Active

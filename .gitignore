@@ -10,3 +10,7 @@ cdk.out
 # Parcel build directories
 .cache
 .build
+
+!lambda/handler.js
+!lambda/config.example.js
+!lambda/config.d.ts
