@@ -6,7 +6,7 @@ import ses = require("@aws-cdk/aws-ses");
 import actions = require("@aws-cdk/aws-ses-actions");
 import path = require("path");
 
-import { config } from "../lambda/config";
+import { SpamFilterOption, config } from "../lambda/config";
 
 export class SesStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -55,12 +55,12 @@ export class SesStack extends cdk.Stack {
     );
     lambdaRole.attachInlinePolicy(policy);
 
-    new ses.ReceiptRuleSet(this, `${config.project}RuleSet`, {
-      dropSpam: true,
+    if (config.spamFilter == SpamFilterOption.NONE) console.warn("Warning: you are not using any spam filter!");
+    const ruleSetProperties = {
+      dropSpam: config.spamFilter == SpamFilterOption.DEFAULT ? true : false,
       rules: [
         {
           enabled: true,
-          recipients: [config.recipient],
           actions: [
             new actions.AddHeader({
               name: "X-Special-Header",
@@ -74,6 +74,8 @@ export class SesStack extends cdk.Stack {
           ]
         }
       ]
-    });
+    };
+
+    new ses.ReceiptRuleSet(this, `${config.project}RuleSet`, ruleSetProperties);
   }
 }
