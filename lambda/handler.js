@@ -3,6 +3,8 @@
 
 var AWS = require("aws-sdk");
 var config = require("./config.js");
+const { filterSpam, spamKey } = require("./lib/filterSpam.js");
+var { emitResultMetric }  = require("./lib/metrics.js");
 
 console.log("AWS Lambda SES Forwarder // @arithmetric // Version 5.0.0");
 
@@ -354,6 +356,8 @@ exports.sendMessage = function(data) {
   });
 };
 
+exports.filterSpam = filterSpam;
+
 /**
  * Handler function to be invoked by AWS Lambda with an inbound SES email as
  * the event.
@@ -370,6 +374,7 @@ exports.handler = function(event, context, callback, overrides) {
       ? overrides.steps
       : [
           exports.parseEvent,
+          exports.filterSpam,
           exports.transformRecipients,
           exports.fetchMessage,
           exports.processMessage,
@@ -393,16 +398,30 @@ exports.handler = function(event, context, callback, overrides) {
         level: "info",
         message: "Process finished successfully."
       });
+      emitResultMetric("Success");
       return data.callback();
     })
     .catch(function(err) {
-      data.log({
-        level: "error",
-        message: "Step returned error: " + err.message,
-        error: err,
-        stack: err.stack
-      });
-      return data.callback(new Error("Error: Step returned error."));
+      // Special check to see if the error type was Spam
+      if (err.message === `${spamKey}`) {
+        data.log({
+          level: "warn",
+          message: "Forward was dropped: " + err.message,
+          error: err,
+          stack: err.stack
+        });
+        emitResultMetric("Spam");
+        return data.callback(new Error("Email dropped as spam."));
+      } else {
+        data.log({
+          level: "error",
+          message: "Step returned error: " + err.message,
+          error: err,
+          stack: err.stack
+        });
+        emitResultMetric("Error");
+        return data.callback(new Error("Error: Step returned error."));
+      }
     });
 };
 

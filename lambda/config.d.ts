@@ -16,6 +16,8 @@ interface Config {
   subjectPrefix: string;
   allowPlusSign: boolean;
   spamFilter: SpamFilterOption;
+  subjectFilterKeywords: string[];
+  blockedRecipients: string[];
   forwardMapping: ForwardMapping;
 }
 

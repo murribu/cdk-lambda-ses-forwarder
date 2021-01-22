@@ -5,7 +5,9 @@ exports.config = {
   // 'project' - A short identifier string used in naming AWS resources
   project: "MyProject",
 
-  // 'recipient' - Forwarded emails will come from this verified address
+  // 'recipient' - Forwarded emails will come from this address. It needs to
+  //   have been verified in Amazon SES as a sender, and be part of a verified
+  //   SES domain.
   recipient: "contact@example.com",
 
   // 'headerValue' - Value added to a header named 'X-Special-Header'
@@ -30,6 +32,21 @@ exports.config = {
   //  1 = Default, uses the `dropSpam` singleton lambda defined by CDK.
   //  2 = Custom, uses the lambda in this project.
   spamFilter: 2,  // 0 = None, 1 = Default, 2 = Custom
+
+  // List of keywords to scan subjects for.  The match is case-insensitive, but
+  // spam metric names will appear as cased here. Examples of common spam terms:
+  subjectFilterKeywords: [
+    'Viagra',
+    'Kamagra',
+    'Levitra',
+    'Keranique',
+    'Cialis'
+  ],
+
+  // List of target recipients to block
+  blockedRecipients: [
+    'spam@example.com'
+  ],
 
   //  'forwardMapping' - Object where the key is the lowercase email address from
   //   which to forward and the value is an array of email addresses to which to
