@@ -92,6 +92,7 @@ export class SesStack extends cdk.Stack {
         title: 'Total Incoming',
         width: 6,
         height: 3,
+        setPeriodToTimeRange: true,
         metrics: [new cloudwatch.Metric({
             namespace: "AWS/Lambda",
             metricName: 'Invocations',
@@ -107,6 +108,7 @@ export class SesStack extends cdk.Stack {
         title: 'Total Dropped',
         width: 6,
         height: 3,
+        setPeriodToTimeRange: true,
         metrics: [new cloudwatch.Metric({
             namespace: `${config.project}/SESForwarder/Result`,
             metricName: 'Spam',
@@ -119,6 +121,7 @@ export class SesStack extends cdk.Stack {
         title: 'Total Errors',
         width: 6,
         height: 3,
+        setPeriodToTimeRange: true,
         metrics: [new cloudwatch.Metric({
             namespace: `${config.project}/SESForwarder/Result`,
             metricName: 'Error',
@@ -131,6 +134,7 @@ export class SesStack extends cdk.Stack {
         title: 'Total Forwarded',
         width: 6,
         height: 3,
+        setPeriodToTimeRange: true,
         metrics: [new cloudwatch.Metric({
             namespace: `${config.project}/SESForwarder/Result`,
             metricName: 'Success',
