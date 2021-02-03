@@ -5,6 +5,9 @@ exports.config = {
   // 'project' - A short identifier string used in naming AWS resources
   project: "MyProject",
 
+  // 'domain' - The domain to handle emails for.
+  domain: "example.com",
+
   // 'recipient' - Forwarded emails will come from this address. It needs to
   //   have been verified in Amazon SES as a sender, and be part of a verified
   //   SES domain.

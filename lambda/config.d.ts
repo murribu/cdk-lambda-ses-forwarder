@@ -10,6 +10,7 @@ export declare const enum SpamFilterOption {
 
 interface Config {
   project: string;
+  domain: string;
   recipient: string;
   headerValue: string;
   emailKeyPrefix: string;

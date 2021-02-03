@@ -63,6 +63,7 @@ export class SesStack extends cdk.Stack {
       rules: [
         {
           enabled: true,
+          recipients: [ `.${config.domain}`, config.domain ],
           actions: [
             new actions.AddHeader({
               name: "X-Special-Header",
@@ -72,7 +73,10 @@ export class SesStack extends cdk.Stack {
               bucket,
               objectKeyPrefix: config.emailKeyPrefix
             }),
-            new actions.Lambda({ function: forwarderLambda })
+            new actions.Lambda({
+              function: forwarderLambda
+            }),
+            new actions.Stop({})
           ]
         }
       ]
