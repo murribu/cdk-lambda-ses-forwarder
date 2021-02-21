@@ -14,3 +14,5 @@ cdk.out
 !lambda/handler.js
 !lambda/config.example.js
 !lambda/config.d.ts
+!lambda/lib/metrics.js
+!lambda/lib/filterSpam.js
